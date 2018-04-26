@@ -42,15 +42,27 @@
     const viz = new carto.Viz(`
       width: blend(
              blend(
-              1, 2, zoom()>4), (log($nkill)*4) + 3
-              zoom()>6)
-      color: ramp(log($nkill), OrYel) 
+              1, 2, zoom()>4), (sqrt($nkill * zoom()) / 4) + 4
+              zoom()>6
+              )
+      color: opacity(ramp(log($nkill), OrYel) ,0.6)
       resolution: 0.25
       order: asc(width())
     `);
     const layer = new carto.Layer('layer', source, viz);
+    const interactivity = new carto.Interactivity(layer);
+    interactivity.on('featureEnter', hover);
+    interactivity.on('featureLeave', leave);
+
     layer.addTo(map, 'watername_ocean');
-    map.setLayoutProperty('waterway_label', 'visibility', 'none');
+
+    function hover(event) {
+    }
+
+    function leave() {
+      console.log("leave")
+    }
+
 
   </script>
 </body>
