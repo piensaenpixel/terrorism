@@ -37,7 +37,7 @@
       user: 'piensaenpixel',
       apiKey: 'default_public'
     });
-
+    const s = carto.expressions;
     const source = new carto.source.Dataset('globalterrorismdb_0617dist_1');
     const viz = new carto.Viz(`
       width: blend(
@@ -46,22 +46,30 @@
               zoom()>6
               )
       color: opacity(ramp(log($nkill), OrYel) ,0.6)
-      resolution: 0.25
+      resolution: 0.9
       order: asc(width())
     `);
     const layer = new carto.Layer('layer', source, viz);
-    const interactivity = new carto.Interactivity(layer);
-    interactivity.on('featureEnter', hover);
-    interactivity.on('featureLeave', leave);
 
     layer.addTo(map, 'watername_ocean');
 
-    function hover(event) {
-    }
+    const interactivity = new carto.Interactivity(layer);
+      interactivity.on('featureHover', e => {
+          const feat = e.features[0];
+          if (feat) {
+              console.log(feat);
+              const oldColor = feat.color;
+              feat.color.blendTo("0.8*opacity(ramp(log($nkill), OrYel) ,0.6)", 300);
+          }
+      });
 
-    function leave() {
-      console.log("leave")
-    }
+      interactivity.on('featureLeave', e => {
+          const feat = e.features[0];
+          if (feat) {
+              console.log(feat);
+              feat.color.reset();
+          }
+      });
 
 
   </script>
