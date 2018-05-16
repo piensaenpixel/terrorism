@@ -10,8 +10,13 @@
   <script src="js/mapbox-gl-dev.js"></script>
   <!-- Include Mapbox GL CSS -->
   <link href="css/mapbox-gl-dev.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <style>
     body {
+      margin: 0;
+      padding: 0;
+    }
+    * {
       margin: 0;
       padding: 0;
     }
@@ -20,19 +25,49 @@
       height: 100%;
       width: 100%;
     }
+    a {
+      color: #000;
+      text-decoration: none;
+    }
+    #fly {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: block;
+      background: red;
+      z-index: 2;
+      background: #fff;
+      padding: 24px;
+      border-radius: 2px;
+    }
+    #fly li {
+      margin: 0 0 12px 0;
+      font: 14px 'Roboto';
+    }
+    #fly li:last-child {
+      margin: 0;
+    }
+
+    ul {
+      list-style-type: none;
+    }
   </style>
 </head>
 <body>
   <div id="map"></div>
+  <ul id="fly">
+    <li><a href="#" id="newYork">New York</a></li>
+    <li><a href="#" id="sanFrancisco">San Francisco</a></li>
+  </ul>
   <script>
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
       center: [-96.6500523, 38.850033],
       zoom: 4,
-      maxZoom: 10,
       dragRotate: false
     });
+    
 
     carto.setDefaultAuth({
       user: 'piensaenpixel',
@@ -53,6 +88,7 @@
     const viz = new carto.Viz(`
       width: 2
       color: opacity(ramp(buckets($ethnicity,"white","hispanic", "asian", "black"),[#41599C,#089F94,#FF518C, #FF8A00]), 0.6)
+      resolution: 0.2
     `);
 
     const layer = new carto.Layer('layer', source, viz);
@@ -76,6 +112,19 @@
     //           feat.color.reset();
     //       }
     //   });
+
+  document.getElementById('newYork').addEventListener('click', function () {
+      map.flyTo({
+          center: [-74.00363483, 40.757309],
+          zoom: 13
+      });
+  });
+  document.getElementById('sanFrancisco').addEventListener('click', function () {
+      map.flyTo({
+          center: [-122.472705, 37.7577627],
+          zoom: 12
+      });
+  });
 
 
   </script>
