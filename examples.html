@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Demo | CARTO VL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <!-- Include CARTO VL JS -->
+    <script src="../../dist/carto-vl.js"></script>
+    <!-- Include Mapbox GL JS -->
+    <script src="../../vendor/mapbox-gl-dev.js"></script>
+    <!-- Include Mapbox GL CSS -->
+    <link href="../../vendor/mapbox-gl-dev.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+            center: [-73.97536949793329, 40.75490160473558],
+            zoom: 12,
+            dragRotate: false
+        });
+
+        carto.setDefaultAuth({
+            user: 'dmanzanares',
+            apiKey: 'YOUR_API_KEY'
+        });
+
+        const s = carto.expressions;
+
+        const source = new carto.source.Dataset('mnmappluto');
+
+        const viz = new carto.Viz();
+
+        // const viz = new carto.Viz(`
+        //   color: red
+        // `);
+
+        // const viz = new carto.Viz(`
+        //   color: ramp(linear($numfloors, 0, 120), temps)
+        // `);
+
+        // const viz = new carto.Viz(`
+        //   color: ramp(linear(log($numfloors), 2, 4), temps)
+        // `);
+
+        // const viz = new carto.Viz(`
+        //   color: ramp(linear(log($numfloors), 2, 4), temps)
+        //   filter: $numfloors != 0
+        // `);
+        // => Interactivity
+
+        // const viz = new carto.Viz(`
+        //   @n: $numfloors
+        //   color: ramp(linear(log(@n), 2, 4), temps)
+        //   filter: between(@n, 10, 120)
+        // `);
+
+        // const n = s.prop('numfloors');
+        // const color = palette => s.ramp(s.linear(n, s.globalMin(n), s.globalMax(n)), palette)
+        // // const color = palette => s.ramp(s.linear(s.log(n), 2, 4)), palette)
+        // const viz = new carto.Viz({
+        //   variables: { n },
+        //   color: color(s.palettes.TEMPS),
+        // //   filter: s.between(n, 10, 120)
+        // });
+        // // viz.color.blendTo(color(s.palettes.PRISM))
+
+        const layer = new carto.Layer('layer', source, viz);
+
+        // const interactivity = new carto.Interactivity(layer);
+        // interactivity.on('featureHover', e => {
+        //     const feat = e.features[0];
+        //     if (feat) {
+        //         console.log(feat);
+        //         feat.color.blendTo(s.namedColor('red'), 2000);
+        //     }
+        // });
+
+        // interactivity.on('featureLeave', e => {
+        //     const feat = e.features[0];
+        //     if (feat) {
+        //         console.log(feat);
+        //         feat.color.reset();
+        //     }
+        // });
+
+        layer.addTo(map, 'watername_ocean');
+    </script>
+</body>
+
+</html>
