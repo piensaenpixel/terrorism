@@ -202,18 +202,23 @@
   document.getElementById("container").addEventListener("scroll", update);
 
   function update() {
+
     if ($('#sf').visible( true )) {
       map.flyTo({
           center: [-122.472705, 37.7577627],
           zoom: 12
       });
-    }
-    if ($('#ny').visible( true )) {
+    } else if ($('#ny').visible( true )) {
       map.flyTo({
           center: [-74.00363483, 40.757309],
           zoom: 13
       });
-    } 
+    } else  {
+      map.flyTo({
+        center: [-96.6500523, 38.850033],
+        zoom: 4
+      });
+    }
 
   }
 
